@@ -38,7 +38,7 @@ export default function MatchDetailsPage() {
       </div>
     );
   }
-
+  // PV!pL)i&-7)JZsm
   if (error) {
     return (
       <div className="container mx-auto px-4 py-6">

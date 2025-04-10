@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_KEY = 'e2c5f7a19b3d4e6a8f0c2d7b5a1e3f9g';
 
-const BASE_URL = 'http://api.crictez.in/v7';
+const BASE_URL = 'https://api.crictez.in/v7';
 
 const api = axios.create({
   baseURL: BASE_URL,
