@@ -70,7 +70,47 @@ export const fetchHomeList = async (): Promise<Match[]> => {
 export const fetchLiveMatchList = async (): Promise<Match[]> => {
   try {
     const response = await api.get(`/liveMatchList/${API_KEY}`);
-    return response.data.data || [];
+    const matches = response.data.data || [];
+    return matches.map((match: any) => {
+      // Ensure score objects are properly formatted
+      const team_a_score: Record<number, ScoreDetails> = {};
+      const team_b_score: Record<number, ScoreDetails> = {};
+
+      // Process team A scores
+      if (match.team_a_score) {
+        Object.entries(match.team_a_score).forEach(([inning, score]: [string, any]) => {
+          if (score && typeof score === 'object') {
+            team_a_score[Number(inning)] = {
+              score: Number(score.score || 0),
+              wicket: Number(score.wicket || 0),
+              ball: Number(score.ball || 0),
+              over: String(score.over || '0.0')
+            };
+          }
+        });
+      }
+
+      // Process team B scores
+      if (match.team_b_score) {
+        Object.entries(match.team_b_score).forEach(([inning, score]: [string, any]) => {
+          if (score && typeof score === 'object') {
+            team_b_score[Number(inning)] = {
+              score: Number(score.score || 0),
+              wicket: Number(score.wicket || 0),
+              ball: Number(score.ball || 0),
+              over: String(score.over || '0.0')
+            };
+          }
+        });
+      }
+
+      return {
+        ...match,
+        team_a_score,
+        team_b_score,
+        current_inning: Number(match.current_inning || 1)
+      };
+    });
   } catch (error) {
     console.error('Error fetching live match list:', error);
     throw error;

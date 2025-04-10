@@ -22,22 +22,17 @@ const getStatusBadge = (status: string) => {
 export default function MatchCard({ match }: { match: Match }) {
   // Function to get scores for all innings
   const getAllTeamScores = (teamId: string) => {
-    if (!match.team_a_score || !match.team_b_score) return null;
-
     const scores = [];
-    for (let inning = 1; inning <= match.current_inning; inning++) {
-      if (teamId === match.team_a) {
-        const score = match.team_a_score[inning];
-        if (score) {
-          scores.push(`${score.score}/${score.wicket} (${score.over})`);
-        }
-      } else if (teamId === match.team_b) {
-        const score = match.team_b_score[inning];
-        if (score) {
-          scores.push(`${score.score}/${score.wicket} (${score.over})`);
-        }
+    const scoreData = teamId === match.team_a ? match.team_a_score : match.team_b_score;
+
+    if (!scoreData) return null;
+
+    // Get all innings scores
+    Object.entries(scoreData).forEach(([inning, score]) => {
+      if (score && typeof score === 'object' && 'score' in score && 'wicket' in score && 'over' in score) {
+        scores.push(`${score.score}/${score.wicket} (${score.over})`);
       }
-    }
+    });
 
     return scores.length > 0 ? scores.join(' | ') : null;
   };
