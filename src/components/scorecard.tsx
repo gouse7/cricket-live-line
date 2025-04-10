@@ -1,22 +1,18 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Match } from "@/lib/api"
 import { mockScorecard } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
 
 interface ScorecardProps {
-  match: any
+  match: Match
 }
 
 export default function Scorecard({ match }: ScorecardProps) {
-  const scorecard = mockScorecard[match.id] || { team1: null, team2: null }
+  const scorecard = mockScorecard[match.match_id] || { team1: null, team2: null }
 
   // Determine which team is currently batting (for live matches)
-  const battingTeam =
-    match.status === "live"
-      ? match.currentStatus?.toLowerCase().includes(match.team1.name.toLowerCase())
-        ? match.team2.name
-        : match.team1.name
-      : null
+  const battingTeam = match.batting_team
 
   if (!scorecard.team1 || !scorecard.team2) {
     return (
@@ -31,19 +27,19 @@ export default function Scorecard({ match }: ScorecardProps) {
       <TabsList className="mb-6">
         <TabsTrigger
           value="team1"
-          className={cn(battingTeam === match.team1.name && match.status === "live" && "relative", "transition-colors")}
+          className={cn(battingTeam === match.team_a && match.match_status.toLowerCase() === "live" && "relative", "transition-colors")}
         >
-          {match.team1.name}
-          {battingTeam === match.team1.name && match.status === "live" && (
+          {match.team_a_short}
+          {battingTeam === match.team_a && match.match_status.toLowerCase() === "live" && (
             <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
           )}
         </TabsTrigger>
         <TabsTrigger
           value="team2"
-          className={cn(battingTeam === match.team2.name && match.status === "live" && "relative", "transition-colors")}
+          className={cn(battingTeam === match.team_b && match.match_status.toLowerCase() === "live" && "relative", "transition-colors")}
         >
-          {match.team2.name}
-          {battingTeam === match.team2.name && match.status === "live" && (
+          {match.team_b_short}
+          {battingTeam === match.team_b && match.match_status.toLowerCase() === "live" && (
             <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
           )}
         </TabsTrigger>
@@ -54,7 +50,7 @@ export default function Scorecard({ match }: ScorecardProps) {
           <div
             className={cn(
               "rounded-md border",
-              battingTeam === match.team1.name && match.status === "live" && "border-l-4 border-primary",
+              battingTeam === match.team_a && match.match_status.toLowerCase() === "live" && "border-l-4 border-primary",
             )}
           >
             <Table>
@@ -136,7 +132,7 @@ export default function Scorecard({ match }: ScorecardProps) {
           <div
             className={cn(
               "rounded-md border",
-              battingTeam === match.team2.name && match.status === "live" && "border-l-4 border-primary",
+              battingTeam === match.team_b && match.match_status.toLowerCase() === "live" && "border-l-4 border-primary",
             )}
           >
             <Table>

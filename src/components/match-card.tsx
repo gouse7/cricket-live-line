@@ -20,23 +20,6 @@ const getStatusBadge = (status: string) => {
 };
 
 export default function MatchCard({ match }: { match: Match }) {
-  // Function to get team score for a specific team
-  const getTeamScore = (teamId: string) => {
-    if (!match.team_a_score || !match.team_b_score) return null;
-
-    const currentInning = match.current_inning;
-    
-    if (teamId === match.team_a) {
-      const score = match.team_a_score[currentInning];
-      return score ? `${score.score}/${score.wicket} (${score.over})` : null;
-    } else if (teamId === match.team_b) {
-      const score = match.team_b_score[currentInning];
-      return score ? `${score.score}/${score.wicket} (${score.over})` : null;
-    }
-
-    return null;
-  };
-
   // Function to get scores for all innings
   const getAllTeamScores = (teamId: string) => {
     if (!match.team_a_score || !match.team_b_score) return null;

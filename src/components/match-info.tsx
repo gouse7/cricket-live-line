@@ -1,12 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Match } from "@/lib/api"
 import { mockMatchInfo } from "@/lib/mock-data"
 
 interface MatchInfoProps {
-  match: any
+  match: Match
 }
 
 export default function MatchInfo({ match }: MatchInfoProps) {
-  const matchInfo = mockMatchInfo[match.id]
+  const matchInfo = mockMatchInfo[match.match_id]
 
   if (!matchInfo) {
     return (

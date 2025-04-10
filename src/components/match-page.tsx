@@ -1,16 +1,14 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchMatchDetails, Match } from '@/lib/api';
 import MatchDetails from '@/components/match-details';
 
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
+interface MatchPageProps {
+  matchId: string;
+}
 
-export default function MatchDetailsPage() {
+export default function MatchPage({ matchId }: MatchPageProps) {
   const [matchDetails, setMatchDetails] = useState<Match | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +17,7 @@ export default function MatchDetailsPage() {
     const fetchMatch = async () => {
       try {
         setIsLoading(true);
-        const details = await fetchMatchDetails("");
+        const details = await fetchMatchDetails(matchId);
         setMatchDetails(details);
         setIsLoading(false);
       } catch (err) {
@@ -29,7 +27,7 @@ export default function MatchDetailsPage() {
     };
 
     fetchMatch();
-  }, []);
+  }, [matchId]);
 
   if (isLoading) {
     return (
@@ -55,5 +53,5 @@ export default function MatchDetailsPage() {
     );
   }
 
-  return <MatchDetails match={matchDetails} />
+  return <MatchDetails match={matchDetails} />;
 }

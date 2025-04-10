@@ -1,13 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card"
+import { Match } from "@/lib/api"
 import { mockTimeline } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
 
 interface TimelineProps {
-  match: any
+  match: Match
 }
 
 export default function Timeline({ match }: TimelineProps) {
-  const timeline = mockTimeline[match.id] || []
+  const timeline = mockTimeline[match.match_id] || []
 
   if (timeline.length === 0) {
     return (

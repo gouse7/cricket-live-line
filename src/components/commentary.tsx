@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useMemo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { mockCommentary } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
@@ -10,7 +10,7 @@ interface CommentaryProps {
 }
 
 export default function Commentary({ matchId }: CommentaryProps) {
-  const commentary = mockCommentary[matchId] || []
+  const commentary = useMemo(() => mockCommentary[matchId] || [], [matchId])
   const commentaryRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll to the latest commentary

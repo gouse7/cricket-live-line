@@ -212,7 +212,38 @@ export const mockCommentary = {
   ],
 }
 
-export const mockScorecard = {
+export interface BattingStats {
+  name: string
+  dismissal: string
+  runs: number
+  balls: number
+  fours: number
+  sixes: number
+  strikeRate: number
+}
+
+export interface BowlingStats {
+  name: string
+  overs: string
+  maidens: number
+  runs: number
+  wickets: number
+  economy: number
+}
+
+export interface TeamScorecard {
+  batting: BattingStats[]
+  bowling: BowlingStats[]
+  extras: string
+  total: string
+}
+
+export interface Scorecard {
+  team1: TeamScorecard | null
+  team2: TeamScorecard | null
+}
+
+export const mockScorecard: Record<string, Scorecard> = {
   match1: {
     team1: {
       batting: [
@@ -489,7 +520,21 @@ export const mockScorecard = {
   },
 }
 
-export const mockMatchInfo = {
+export interface MatchInfo {
+  series: string
+  match: string
+  venue: string
+  date: string
+  time: string
+  toss: string
+  umpires: string[]
+  thirdUmpire: string
+  matchReferee: string
+  weather: string
+  pitch: string
+}
+
+export const mockMatchInfo: Record<string, MatchInfo> = {
   match1: {
     series: "ICC T20 World Cup 2023",
     match: "Final",
@@ -544,7 +589,15 @@ export const mockMatchInfo = {
   },
 }
 
-export const mockTimeline = {
+export interface TimelineEvent {
+  time: string
+  over: string
+  type: "info" | "wicket" | "boundary" | "over" | "milestone" | "six"
+  title: string
+  description: string
+}
+
+export const mockTimeline: Record<string, TimelineEvent[]> = {
   match1: [
     {
       time: "19:00",
